@@ -1,1 +1,1 @@
-Exercises and games from Conrad Barski's Land of Lisp.
+Exercícios e jogos do livro Land of Lisp, por Conrad Barski.
