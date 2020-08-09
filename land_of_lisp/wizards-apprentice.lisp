@@ -1,4 +1,4 @@
-(defparameter *nodes* 
+	(defparameter *nodes* 
     '((living-room (you are in the living-room. a wizard is snoring loudly on the couch.))
     (garden (you are in a beautiful garden. there is a well in front of you.))
     (attic (you are in the attic. there is a giant welding torch in the corner.))))
@@ -21,6 +21,8 @@
 								   (frog garden)))
 
 (defparameter *location* 'living-room)
+
+(defparameter *allowed-commands* '(look walk pickup inventory))
 
 (defun describe-path (edge)
     `(there is a ,(caddr edge) going ,(cadr edge) from here.))
@@ -59,3 +61,23 @@
 		 `(you are now carrying the ,object))
 		 (t '(you cannot get that.))))
 
+(defun inventory () 
+	(cons 'items- (objects-at 'body *objects* *object-locations*)))
+
+(defun game-repl ()
+	(let ((comd (game-read)))
+	(unless (eq (car cmd) 'quit)
+		(game-print (game-eval cmd))
+		(game-repl))))
+
+(defun game-read () 
+	(let ((cmd (read-from-string
+					(concatenate 'string "(" (read-line) ")"))))
+			(flet ((quote-it (x)
+							(list 'quote x)))
+				(cons (car cmd) (mapcar #'quote-it (car cmd))))))
+
+(defun game-eval (sexp)
+	(if (member (car sexp) *allowed-commands*)
+		(eval sexp)
+		'(i do not know that command.)))
