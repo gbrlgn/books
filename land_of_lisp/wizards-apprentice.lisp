@@ -1,4 +1,4 @@
-	(defparameter *nodes* 
+(defparameter *nodes* 
     '((living-room (you are in the living-room. a wizard is snoring loudly on the couch.))
     (garden (you are in a beautiful garden. there is a well in front of you.))
     (attic (you are in the attic. there is a giant welding torch in the corner.))))
@@ -81,3 +81,18 @@
 	(if (member (car sexp) *allowed-commands*)
 		(eval sexp)
 		'(i do not know that command.)))
+
+(defun tweak-text (lst caps lit)
+  (when lst
+    (let ((item (car lst))
+          (rest (cdr lst)))
+      (cond ((eql item #\space) (cons item (tweak-text rest caps lit)))
+            ((member item '(#\! #\? #\.)) (cons item (tweak-text rest t lit)))
+            ((eql item #\") (tweak-text rest caps (not lit)))
+            (lit (cons item (tweak-text rest nil lit)))
+            (caps (cons (char-upcase item) (tweak-text rest nil lit)))
+            (t (cons (char-downcase item) (tweak-text rest nil nil)))))))
+
+(defun game-print (lst)
+    (princ (coerce (tweak-text (coerce (string-trim "() " (prin1-to-string lst)) 'list) t nil) 'string))
+    (fresh-line))
