@@ -65,7 +65,7 @@
 	(cons 'items- (objects-at 'body *objects* *object-locations*)))
 
 (defun game-repl ()
-	(let ((comd (game-read)))
+	(let ((cmd (game-read)))
 	(unless (eq (car cmd) 'quit)
 		(game-print (game-eval cmd))
 		(game-repl))))
@@ -94,5 +94,8 @@
             (t (cons (char-downcase item) (tweak-text rest nil nil)))))))
 
 (defun game-print (lst)
-    (princ (coerce (tweak-text (coerce (string-trim "() " (prin1-to-string lst)) 'list) t nil) 'string))
+    (princ (coerce (tweak-text (coerce (string-trim "() " (prin1-to-string lst)) 
+									   'list)
+							   t nil) 
+				   'string))
     (fresh-line))
