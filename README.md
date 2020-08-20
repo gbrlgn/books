@@ -1,2 +1,2 @@
 # books
-Exercícios encontrados em livros 
+Book exercises and examples
