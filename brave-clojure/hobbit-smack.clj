@@ -20,7 +20,7 @@
 
 (defn matching-part
   [part]
-  {:name (clojure.string/replace (:name part) "^left-" "right-")
+  {:name (clojure.string/replace (:name part) #"^left-" "right-")
    :size (:size part)})
 
 (defn symmetrize-body-parts
@@ -35,4 +35,14 @@
                (into final-body-parts
                      (set [part (matching-part part)])))))))
 
+(defn better-symmetrize
+  "Symmetrize but better, using reduce"
+  [asym-body-parts]
+  (reduce (fn [final-body-parts part]
+            (into final-body-parts (set [part (matching-part part)])))
+          []
+          asym-body-parts))
+
 (symmetrize-body-parts asym-hobbit-body-parts)
+(better-symmetrize asym-hobbit-body-parts)
+                   
