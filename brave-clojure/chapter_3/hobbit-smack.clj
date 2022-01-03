@@ -2,7 +2,7 @@
                       {:name "left-eye" :size 1}
                       {:name "left-ear" :size 1}
                       {:name "mouth" :size 1}
-                      {:name "ear" :size 1}
+                      {:name "nose" :size 1}
                       {:name "neck" :size 2}
                       {:name "left-shoulder" :size 3}
                       {:name "left-upper-arm":size 3}
@@ -45,4 +45,16 @@
 
 (symmetrize-body-parts asym-hobbit-body-parts)
 (better-symmetrize asym-hobbit-body-parts)
-                   
+
+(defn hit
+  [asym-body-parts]
+  (let [sym-parts (better-symmetrize asym-body-parts)
+        body-part-size-sum (reduce + (map :size sym-parts))
+        target (rand body-part-size-sum)]
+    (loop [[part & remaining] sym-parts
+           accumulated-size (:size part)]
+      (if (> accumulated-size target)
+        part
+        (recur remaining (+ accumulated-size (:size (first remaining))))))))
+
+(hit asym-hobbit-body-parts)
