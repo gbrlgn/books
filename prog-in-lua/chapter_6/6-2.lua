@@ -1,0 +1,3 @@
+function nofirst (f, ...)
+    return ...
+end
